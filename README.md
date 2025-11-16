@@ -6,13 +6,21 @@ A comprehensive project management system built with FilamentPHP, designed to st
 
 Centralize and streamline all activities related to project execution with a **simple, minimal, and user-friendly** interface optimized for small teams with strict role-based access control.
 
+**Design Philosophy: User-Friendly, Not Theory-Friendly**
+- Built for real-world project management, not academic concepts
+- Clean, intuitive interfaces that anyone can use
+- Quick actions accessible in 1-2 clicks
+- No unnecessary complexity or jargon
+- Focus on getting work done efficiently
+
 ## 🛠️ Technology Stack
 
 - **Framework**: Laravel 11
 - **Admin Panel**: FilamentPHP v3
+- **Permissions**: Filament Shield (role & permission management)
 - **Media Management**: Spatie Media Library
 - **Settings**: Spatie Laravel Settings
-- **Permissions**: Spatie Laravel Permission
+- **Activity Log**: Spatie Laravel Activity Log
 - **Database**: MySQL/PostgreSQL
 - **Queue**: Redis
 - **Storage**: Local/S3
@@ -470,8 +478,9 @@ Centralize and streamline all activities related to project execution with a **s
 ### Pivot Tables
 - `project_user` (team assignments)
 - `task_user` (task assignments)
-- `model_has_roles` (Spatie Permission)
-- `model_has_permissions` (Spatie Permission)
+- `model_has_roles` (Filament Shield)
+- `model_has_permissions` (Filament Shield)
+- `role_has_permissions` (Filament Shield)
 
 ## 📅 Implementation Phases
 
@@ -480,7 +489,8 @@ Centralize and streamline all activities related to project execution with a **s
 
 - ✅ Laravel 11 installation
 - ✅ FilamentPHP v3 installation
-- ✅ Spatie packages setup (Media, Settings, Permission)
+- ✅ Filament Shield setup (roles & permissions)
+- ✅ Spatie packages setup (Media Library, Settings, Activity Log)
 - ✅ Database design & migrations
 - ✅ User authentication & roles
 - ✅ Basic dashboard layout
@@ -690,11 +700,12 @@ php artisan key:generate
 php artisan migrate
 php artisan db:seed
 
-# Create admin user
-php artisan make:filament-user
+# Setup Filament Shield
+php artisan shield:install
+php artisan shield:generate --all
 
-# Install Filament
-php artisan filament:install --panels
+# Create super admin user
+php artisan shield:super-admin
 
 # Build assets
 npm run build
@@ -704,43 +715,47 @@ php artisan serve
 ```
 
 ### Default Roles Setup
-```bash
-php artisan db:seed --class=RoleSeeder
-```
-
-This will create:
-- Admin
-- Project Manager
-- Developer
-- QA
-- Freelancer
-- Finance
+Filament Shield will automatically create default roles. You can customize them via the admin panel:
+- **Super Admin** (full access)
+- **Admin** (configured permissions)
+- **Project Manager**
+- **Developer**
+- **QA**
+- **Freelancer**
+- **Finance**
 
 ## 📦 Key Packages
 
 ```json
 {
   "filament/filament": "^3.0",
+  "bezhansalleh/filament-shield": "^3.0",
   "spatie/laravel-medialibrary": "^11.0",
   "spatie/laravel-settings": "^3.0",
-  "spatie/laravel-permission": "^6.0",
   "spatie/laravel-backup": "^9.0",
   "spatie/laravel-activitylog": "^4.0"
 }
 ```
 
+**Why Filament Shield?**
+- Seamlessly integrates with FilamentPHP
+- Auto-generates permissions for all resources
+- Built-in role management UI
+- Super admin support out of the box
+- User-friendly permission assignment interface
+
 ## 🔐 Security Features
 
-- ✅ Role-based access control (RBAC)
+- ✅ Role-based access control via Filament Shield
+- ✅ Resource-level permissions (auto-generated)
 - ✅ Row-level security (users see only their data)
 - ✅ Document access control
 - ✅ Audit logging (Spatie Activity Log)
-- ✅ Secure file uploads
+- ✅ Secure file uploads with validation
 - ✅ CSRF protection
 - ✅ XSS prevention
 - ✅ SQL injection prevention
 - ✅ Encrypted sensitive data
-- ✅ Two-factor authentication (optional)
 
 ## 📊 Key Features Summary
 
